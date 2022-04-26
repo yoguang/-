@@ -65,3 +65,46 @@ const _run = debounce(run, 1000);
 
 _run(1);
 _run(2);
+
+function throttle(func, delay) {
+  let timer = null;
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
+    const context = this;
+    if (!timer) {
+    timer = setTimeout(() => {
+      func.apply(context, args);
+      timer = null;
+    }, delay);
+    }
+  };
+}
+
+function throttle2(func, delay) {
+  let timer = null;
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
+    const context = this;
+    if (!timer) {
+      func.apply(context, args);
+      timer = setTimeout(() => {
+        timer = null;
+      }, delay);
+    }
+  };
+}
+
+
+function throttle3(func, delay) {
+  let pre = Date.now();
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
+    const context = this;
+    const now = Date.now();
+    if (now - pre >= delay) {
+        func.apply(context, args);
+        pre = Date.now();
+    }
+  };
+}
+

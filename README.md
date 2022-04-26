@@ -45,10 +45,10 @@ function debounce(func, delay) {
   let timer;
   return function () {
     clearTimeout(timer);
-    const _that = this;
+    const context = this;
     const args = Array.prototype.slice.call(arguments);
     timer = setTimeout(() => {
-      func.apply(_that, args);
+      func.apply(context, args);
     }, delay);
   };
 }
@@ -59,5 +59,45 @@ function debounce(func, delay) {
 > 规定在一个单位时间内，只能触发一次函数。如果这个单位时间内触发多次函数，只有一次生效。
 
 ```js
-function throttle(func, delay) {}
+// 后执行
+function throttle(func, delay) {
+  let timer = null;
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
+    const context = this;
+    if (!timer) {
+      timer = setTimeout(() => {
+        func.apply(context, args);
+        timer = null;
+      }, delay);
+    }
+  };
+}
+// 先执行
+function throttle2(func, delay) {
+  let timer = null;
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
+    const context = this;
+    if (!timer) {
+      func.apply(context, args);
+      timer = setTimeout(() => {
+        timer = null;
+      }, delay);
+    }
+  };
+}
+// 先执行
+function throttle3(func, delay) {
+  let pre = Date.now();
+  return function () {
+    const args = Array.prototype.slice.call(arguments);
+    const context = this;
+    const now = Date.now();
+    if (now - pre >= delay) {
+      func.apply(context, args);
+      pre = Date.now();
+    }
+  };
+}
 ```
