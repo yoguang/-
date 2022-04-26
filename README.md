@@ -102,17 +102,37 @@ function throttle3(func, delay) {
 }
 ```
 
+### 排序
+
+```js
+// 冒泡排序
+function bubbleSort(arr) {
+  const array = [...arr]; // 新建一个数组，这样不会改变原数组
+  for (let i = 0; i < array.length - 1; i++) {
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[i] > array[j]) {
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+    }
+  }
+  return array;
+}
+```
+
 ## 概念原理题
 
 ### 继承
 
-#### 原型链继承
-
-> 利用对象原型链特性继承， Son.prototype = new Parent() 将子类的原型指向父类的实例对象。
-> 优点：简单实现继承。
-> 缺点：子类继承父类实例化对象，导致子类所有实例化对象都共享原型对象的属性及方法。
-
 ```js
+/**
+ * 原型链继承
+ * 利用对象原型链特性继承， Son.prototype = new Parent() 将子类的原型指向父类的实例对象。
+ * 优点：简单实现继承。
+ * 缺点：子类继承父类实例化对象，导致子类所有实例化对象都共享原型对象的属性及方法。
+ *
+ */
 function Parent() {
   this.name = "web前端";
   this.type = ["JS", "HTML", "CSS"];
@@ -124,15 +144,14 @@ function Son() {}
 Son.prototype = new Parent();
 son1 = new Son();
 son1.Say();
-```
 
-#### 构造函数继承
+/**
+ * 构造函数继承
+ * 通过构造函数 call、apply 方法实现继承。
+ * 优点：子类实例化对象属性及方法独立，可以给实例化对象添加参数。
+ * 缺点：每次实例化对象都会创建一遍方法，无法实现函数复用；无法调用父级构造函数原型对象的方法。
+ */
 
-> 通过构造函数 call、apply 方法实现继承。
-> 优点：子类实例化对象属性及方法独立，可以给实例化对象添加参数。
-> 缺点：每次实例化对象都会创建一遍方法，无法实现函数复用；无法调用父级构造函数原型对象的方法。
-
-```js
 function Parent(name) {
   this.name = name;
 }
@@ -143,15 +162,14 @@ son1 = new Son("JS");
 console.log(son1); //JS
 son2 = new Son("HTML");
 console.log(son2); //HTML
-```
 
-#### 组合继承
+/**
+ * 组合继承
+ * 利用原型链继承和构造函数继承进行组合使用
+ * 优点：基于原型链继承实现原型对象方法的继承，利用构造函数实现属性继承且可添加参数
+ * 缺点：调用两次父级构造函数
+ */
 
-> 利用原型链继承和构造函数继承进行组合使用
-> 优点：基于原型链继承实现原型对象方法的继承，利用构造函数实现属性继承且可添加参数
-> 缺点：调用两次父级构造函数
-
-```js
 function Parent(name) {
   this.name = name;
   this.type = ["JS", "HTML", "CSS"];
@@ -171,14 +189,13 @@ console.log(son1.type); //['JS','HTML','CSS','VUE']
 console.log(son2.type); //['JS','HTML','CSS','PHP']
 son1.Say(); //张三
 son2.Say(); //李四
-```
 
-#### 原型式继承
+/**
+ * 原型式继承
+ * 新建一个函数对象，将参数作为这个对象的原型对象
+ * 优缺点：和原型链类似
+ */
 
-> 新建一个函数对象，将参数作为这个对象的原型对象
-> 优缺点：和原型链类似
-
-```js
 function fun(obj) {
   function Son() {}
   Son.prototype = obj;
@@ -191,14 +208,13 @@ var son1 = fun(parent);
 var son2 = fun(parent);
 console.log(son1.name); //张三
 console.log(son2.name); //张三
-```
 
-#### 寄生继承
+/**
+ * 寄生继承
+ * 在原型链继承的基础上，在函数内部新增方法（丰富对象）
+ * 优缺点：跟构造函数继承类似，调用一次函数就得创建一遍方法，无法实现函数复用，效率较低。
+ */
 
-> 在原型链继承的基础上，在函数内部新增方法（丰富对象）
-> 优缺点：跟构造函数继承类似，调用一次函数就得创建一遍方法，无法实现函数复用，效率较低。
-
-```js
 function fun(obj) {
   function Son() {}
   Son.prototype = obj;
@@ -217,14 +233,13 @@ var parent = {
 var parent1 = Parasitic(parent);
 var parent2 = Parasitic(parent);
 console.log(parent2.Say == parent1.Say); // false
-```
 
-#### 寄生组合继承
+/**
+ * 寄生组合继承
+ * 结合寄生继承和组合继承的各自优点
+ * 优缺点：JS 继承的首选方法
+ */
 
-> 结合寄生继承和组合继承的各自优点
-> 优缺点：JS 继承的首选方法
-
-```js
 function Parasitic(son, parent) {
   var clone = Object.create(parent.prototype); // 以父级构造函数原型创建一个新对象
   son.prototype = clone; // 指定对象，将子级构造函数对象的原型指向新对象

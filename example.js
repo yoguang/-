@@ -108,3 +108,21 @@ function throttle3(func, delay) {
   };
 }
 
+// 冒泡排序
+
+function bubbleSort(arr) {
+  const array = [...arr]; // 新建一个数组，这样不会改变原数组
+  for (let i = 0; i < array.length - 1; i++) {
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[i] > array[j]) {
+        const temp = array[i]; // 保存大的值
+        array[i] =  array[j]; // 交换值
+        array[j] = temp; // 把大值向后移动一位
+      }
+    }
+  }
+  return array;
+}
+const arr = [5, 4, 0, 2, 1];
+console.log('bubbleSort----->', bubbleSort(arr));
+console.log('arr----->', arr)
