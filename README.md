@@ -16,6 +16,16 @@ Function.prototype._bind = function (context) {
 };
 ```
 
+### 手动实现 new
+
+```js
+function myNew(fn) {
+  const obj = Object.crete(fn.prototype);
+  const result = fn.apply(obj, [...arguments.slice(1)]);
+  return typeof result === 'object' ? result ？ obj;
+}
+```
+
 ### 斐波那契数列
 
 ```js
