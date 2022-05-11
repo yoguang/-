@@ -1,3 +1,22 @@
+// 函数柯里化
+function curry (fn) {
+  const args = [].slice.call(arguments, 1);
+  return function () {
+    const _args = [...args, ...arguments];
+    if (_args.length <= fn.length) {
+      return curry(fn, ..._args);
+    } else {
+      return fn.apply(null, _args);
+    }
+  }
+}
+function add(a, b, c) {
+  return a + b + c;
+}
+
+const _add = curry(add, 4)
+console.log('_add return------>', _add(1)(2)(3))
+
 // 手动实现 bind
 Function.prototype._bind = function (context) {
   let self = this;

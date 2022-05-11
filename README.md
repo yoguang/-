@@ -2,6 +2,24 @@
 
 ## 编程题
 
+### 函数柯里化
+
+```js
+function curry(fn) {
+  const args = [].slice.call(arguments, 1); // 取出多余参数，作为被柯里化函数的参数
+  return function () {
+    const _args = [...args, ...arguments]; // 合并参数
+    if (_args.length < fn.length) {
+      // 实参数量小于fn形参数量，执行递归
+      return curry(fn, ..._args);
+    } else {
+      // 实参数量满足条件，执行函数返回结果
+      return fn.apply(null, _args);
+    }
+  };
+}
+```
+
 ### 手动实现 JavaScript bind 函数
 
 ```js
