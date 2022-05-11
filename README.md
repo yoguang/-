@@ -221,7 +221,7 @@ console.log(son2.name); //张三
 
 /**
  * 寄生继承
- * 在原型链继承的基础上，在函数内部新增方法（丰富对象）
+ * 在原型式继承的基础上，在函数内部新增方法（丰富对象）
  * 优缺点：跟构造函数继承类似，调用一次函数就得创建一遍方法，无法实现函数复用，效率较低。
  */
 
@@ -267,4 +267,40 @@ function Son(name) {
   Parent.call(this, name);
 }
 Parasitic(Son, Parent);
+```
+
+## TypeScript
+
+### Pick 实现
+
+```TS
+type Pick<T, k extends keyof T> = {
+  [P in keyof K]: T[P];
+};
+```
+
+### Partial 实现
+
+```TS
+type Partial<T> = {
+  [P in keyof T]?: T[P]
+}
+
+```
+
+### Required 实现
+
+```TS
+type Required<T> = {
+  [P in keyof T]-?: T[P]
+}
+
+```
+
+### Readonly 实现
+
+```TS
+type Readonly<T> = {
+  readonly [P in keyof T]: T[P]
+}
 ```
