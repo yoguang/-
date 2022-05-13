@@ -149,6 +149,81 @@ function bubbleSort(arr) {
 }
 ```
 
+### 扁平数据结构转 Tree
+
+```js
+// 来源：https://juejin.cn/post/6983904373508145189#heading-8
+let arr = [
+  { id: 1, name: "部门1", pid: 0 },
+  { id: 2, name: "部门2", pid: 1 },
+  { id: 3, name: "部门3", pid: 1 },
+  { id: 4, name: "部门4", pid: 3 },
+  { id: 5, name: "部门5", pid: 4 },
+];
+
+function arrayToTree(items) {
+  const result = []; // 存放结果集
+  const itemMap = {}; //
+  for (const item of items) {
+    const id = item.id;
+    const pid = item.pid;
+
+    if (!itemMap[id]) {
+      itemMap[id] = {
+        children: [],
+      };
+    }
+
+    itemMap[id] = {
+      ...item,
+      children: itemMap[id]["children"],
+    };
+
+    const treeItem = itemMap[id];
+
+    if (pid === 0) {
+      // 添加根节点
+      result.push(treeItem);
+    } else {
+      // 判断当前元素是否存在父级节点，不存在创建父级
+      if (!itemMap[pid]) {
+        itemMap[pid] = {
+          children: [],
+        };
+      }
+      // 将当前元素添加到父节点中
+      itemMap[pid].children.push(treeItem);
+    }
+  }
+  return result;
+}
+
+arrayToTree(arr);
+/**
+ [{
+    id: 1,
+    name: "部门1",
+    pid: 0,
+    children: [
+      {
+        id: 2,
+        name: "部门2",
+        pid: 1,
+        children: [],
+      },
+      {
+        id: 3,
+        name: "部门3",
+        pid: 1,
+        children: [
+          // 结果 ,,,
+        ],
+      },
+    ],
+  }];
+*/
+```
+
 ## 概念原理题
 
 ### 继承

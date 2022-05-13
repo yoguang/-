@@ -1,3 +1,48 @@
+// 扁平数据结构转 Tree
+
+let arr = [
+  { id: 1, name: "部门1", pid: 0 },
+  { id: 2, name: "部门2", pid: 1 },
+  { id: 3, name: "部门3", pid: 1 },
+  { id: 4, name: "部门4", pid: 3 },
+  { id: 5, name: "部门5", pid: 4 },
+];
+
+function arrayToTree(items) {
+  const result = []; // 存放结果集
+  const itemMap = {}; //
+  for (const item of items) {
+    const id = item.id;
+    const pid = item.pid;
+
+    if (!itemMap[id]) {
+      itemMap[id] = {
+        children: [],
+      };
+    }
+
+    itemMap[id] = {
+      ...item,
+      children: itemMap[id]["children"],
+    };
+
+    const treeItem = itemMap[id];
+
+    if (pid === 0) {
+      result.push(treeItem);
+    } else {
+      if (!itemMap[pid]) {
+        itemMap[pid] = {
+          children: [],
+        };
+      }
+      itemMap[pid].children.push(treeItem);
+    }
+  }
+  return result;
+}
+console.log('arrayToTree---->', JSON.stringify(arrayToTree(arr), null,2))
+
 // 函数柯里化
 function curry (fn) {
   const args = [].slice.call(arguments, 1);
@@ -142,6 +187,6 @@ function bubbleSort(arr) {
   }
   return array;
 }
-const arr = [5, 4, 0, 2, 1];
-console.log('bubbleSort----->', bubbleSort(arr));
-console.log('arr----->', arr)
+const numArr = [5, 4, 0, 2, 1];
+console.log('bubbleSort----->', bubbleSort(numArr));
+console.log('numArr----->', numArr)
