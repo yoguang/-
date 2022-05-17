@@ -226,6 +226,23 @@ arrayToTree(arr);
 
 ## 概念原理题
 
+### 原型
+
+> 原型：本质上就是一个对象，每一个构造函数都有一个 Func.prototype 属性指向原型对象；原型对象上都会有一个 Func.prototype.constructor 指向 Func 这个构造函数本身
+
+### 原型链
+
+> 当我们在回答原型链时，是不是这么说：“访问一个实例化对象上的某个属性比如 name，先是在实例化对象本身上寻找，如果实例化对象自身上不存在该属性，就往它的构造函数的原型对象上查找，如果还没有就再往上一级（父类）构造函数查找，直到 Object.prototype 原型对象如果还未找到就返回 null。” 是不是感觉很啰嗦......
+> 现在我们来看看经典原型链示图，是不是看的一脸懵 😳。不要怕我们来一步一步分析一下。
+> ①：我们实例化 Foo 构造函数创建了对象 f1
+> ②：f1 对象上有一个隐藏的属性`[[Prototype]]`（主流浏览器都在对象上暴露`__proto__`属性)用于访问对象的原型
+> ③：f1.`__proto__` 指向 Foo.prototype 原型对象，然后 Foo.prototype.constructor 又指回构造函数 Foo 自身。
+> ④：当访问一个 f1 上的某个属性时，在 Foo.prototype 原型上也没找到，那就会继续向上查找 Foo.prototype.`__proto__` 找到顶层对象 Object.prototype 原型上，存在返回对应的值，不存在就返回 null；至此查找结束，整个查找过程就是原型链。
+> ⑤：其他链路重复 ①②③④
+> 总结：实例化对象访问其属性，现在对象自身查找，不存在就一层层向上查找原型对象属性，直到顶层对象 Object，如果存在该属性就返回，不存在就返回 null。
+
+![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1b4c23c5ab19466eb9b614b5c2cc78ca~tplv-k3u1fbpfcp-watermark.image?)
+
 ### 继承
 
 ```js
